@@ -1,0 +1,42 @@
+{# Template: view_match_observation.html                                    #}
+{# Display a previously entered match observation                           #}
+
+{# Expects context variables:                                               #}
+{#    observation ==> an instance of models.MatchObservation                #}
+
+{# References Templates:                                                    #}
+{#    view_observation.html                                                 #}
+
+{# Defines Blocks:                                                          #}
+{#    None                                                                  #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+{#                            Arcee_tags Library                            #}
+{%                             load Arcee_tags                              %}
+{# View the documentation for the Arcee_tags library:                       #}
+{#     ~{% url Profiling.views.root%}Profiling/templatetags/Arcee_tags.py                      #}
+
+{% content 'default' %}
+	{% header 'off' %}
+		{% spacer %}
+		{% data 'Match' '5em' %}{{ observation.match }}{% enddata %}
+		{% data '' '10em' %}{{ observation.observer }}{% enddata %}
+		{% data 'Result' '7em' %}{{ observation.result }}{% enddata %}
+		{% data 'Qual. Points' '8em' %}{{ observation.qualification_score }}{% enddata %}
+		{% data 'Rank Points' '8em' %}{{ observation.ranking_score }}{% enddata %}
+		{% data '' '8em' %}{{ observation.get_red_yellow_card_display }}{% enddata %}
+	{% endheader %}
+	{% section 'Scoring:' %}
+		{% data 'Alliance Points' %}{{ observation.alliance_score }}{% enddata %}
+		{% data 'Alliance Penalties' %}{{ observation.alliance_penalties }}{% enddata %}
+		{% data 'Alliance Score' %}{{ observation.alliance_points }}{% enddata %}
+		{% data 'Opponent Points' %}{{ observation.opponent_score }}{% enddata %}
+		{% data 'Opponent Penalties' %}{{ observation.opponent_penalties }}{% enddata %}
+		{% data 'Opponent Score' %}{{ observation.opponent_points }}{% enddata %}
+	{% endsection %}
+	{% include 'view_observation.html' %}
+{% endcontent %}
+{% vspacer %}

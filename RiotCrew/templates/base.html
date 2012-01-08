@@ -1,0 +1,45 @@
+{% spaceless                                                                %}
+{# Template: base.html                                                      #}
+{# Base page structure for Arcee                                            #}
+
+
+{# Expects context variables:                                               #}
+{#    None                                                                  #}
+
+{# References Templates:                                                    #}
+{#    None                                                                  #}
+
+{# Defines Blocks:                                                          #}
+{#    'title'                                                               #}
+{#    'head_content'                                                        #}
+{#    'content'                                                             #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>{% block title %}Arcee - Riot Crew Scouting System{% endblock %}</title>
+	<link type="text/css" media="all" rel="stylesheet" href="{% url Profiling.views.root%}content/CSS/Themes/Blitzer/jquery-ui-1.8.8.custom.css" />
+	<link type="text/css" media="all" rel="stylesheet" href="{% url Profiling.views.root%}content/CSS/Arcee.css" />
+	<script type="text/javascript" src="{% url Profiling.views.root%}content/Scripts/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="{% url Profiling.views.root%}content/Scripts/jquery-ui-1.8.8.custom.min.js"></script>
+	<script type="text/javascript" src="{% url Profiling.views.root%}content/Scripts/tooltip.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.button').button();
+		});
+	</script>
+	{% block head_content %}{% endblock %}
+</head>
+
+<body class="ui-widget ui-widget-content ui-helper-reset" style="font-size: 12px;">
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
+{% endspaceless %}

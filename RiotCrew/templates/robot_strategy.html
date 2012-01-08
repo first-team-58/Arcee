@@ -1,0 +1,24 @@
+{# Template: robot_strategy.html                                            #}
+{# Display robot/team strategies                                            #}
+
+{# Expects context variables:                                               #}
+{#    form ==> an instance of forms.RobotStrategyForm                       #}
+
+{# References Templates:                                                    #}
+{#    None                                                                  #}
+
+{# Defines Blocks:                                                          #}
+{#    None                                                                  #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+{#                            Arcee_tags Library                            #}
+{%                             load Arcee_tags                              %}
+{# View the documentation for the Arcee_tags library:                       #}
+{#     ~{% url Profiling.views.root%}Profiling/templatetags/Arcee_tags.py                      #}
+
+{% for field in form %}
+	{% show_field field %}
+{% endfor %}

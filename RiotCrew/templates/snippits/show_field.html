@@ -1,0 +1,20 @@
+{# Template For Tag: show_field                                             #}
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+<div class="row row_{{ field.html_name }} {{ extra_class }} {% if field.errors %} errors{% endif %}"{% if field.help_text %} title="{{ field.help_text }}"{% endif %}{% if width %} style="width: {{ width }};"{% endif %}>
+	<div class="label" {% if width %}style="width: {{ width }};"{% endif %}>
+		{{ field.label_tag }}: 
+	</div>
+	<div class="field">
+		{{field}} 
+		{% if field.errors %}
+		<script type="text/javascript">
+			$(function(){
+				$('div.row_{{ field.html_name }}').find('input, select, div.icon_error').tooltip('{% if field.errors|length > 1 %}Please correct the following errors:<br/>{% endif %}{% for error in field.errors %}&nbsp;&#8226; {{ error|escapejs }}<br/>{% endfor %}');
+				});
+			</script>
+		{% endif %}
+	</div>
+</div>

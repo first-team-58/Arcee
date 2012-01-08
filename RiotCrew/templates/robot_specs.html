@@ -1,0 +1,65 @@
+{# Template: robot_specs.html                                               #}
+{# Display robot specifications for a team                                  #}
+
+{# Expects context variables:                                               #}
+{#    form ==> an instance of forms.RobotSpecsForm                          #}
+
+{# References Templates:                                                    #}
+{#    None                                                                  #}
+
+{# Defines Blocks:                                                          #}
+{#    None                                                                  #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+{#                            Arcee_tags Library                            #}
+{%                             load Arcee_tags                              %}
+{# View the documentation for the Arcee_tags library:                       #}
+{#     ~{% url Profiling.views.root%}Profiling/templatetags/Arcee_tags.py                      #}
+
+<div class="three_column">
+	<div id="basic_specs">
+		<div class="section_header">Basic Stats</div>
+		{% show_field form.weight %}
+		{% show_field form.height 'three_column' %}
+		{% show_field form.length 'three_column' %}
+		{% show_field form.width 'three_column' %}
+		{% show_field form.drive_motor%}
+		{% show_field form.drive_motor_qty %}
+		{% show_field form.drive_wheels 'two_column' %}
+		{% show_field form.total_wheels 'two_column' %}
+		{% show_field form.speed %}
+		{% show_field form.pushing_power %}
+		{% show_field form.drv_team_practice_time %}
+	</div>
+</div>
+<div class="three_column">
+	<div id="autonomous">
+		<div class="section_header">Autonomous</div>
+		{% show_field form.auto_hang %}
+		{% show_field form.auto_strategy %}
+	</div>
+	<div class="vspacer"></div>
+	<div id="teleop">
+		<div class="section_header">Teleoperation</div>
+		{% show_field form.tele_hang %}
+		{% show_field form.tele_time_hang_top %}
+		{% show_field form.tele_time_hang_middle %}
+		{% show_field form.tele_time_hang_bottom %}
+		{% show_field form.tele_strategy %}
+	</div>
+</div>
+<div class="three_column">
+	<div id="minibot">
+		<div class="section_header">Minibot</div>
+		{% show_field form.mini_count %}
+		{% show_field form.mini_speed %}
+		{% show_field form.mini_deployment %}
+		{% show_field form.mini_compat %}
+	</div>
+</div>
+<div id="additional_notes">
+	{% show_field form.notes %}
+</div>

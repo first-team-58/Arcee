@@ -1,0 +1,30 @@
+{# Template: view_practice_observation.html                                 #}
+{# Display previously entered practice observation data                     #}
+
+{# Expects context variables:                                               #}
+{#    observation ==> an instance of models.PracticeObservation             #}
+
+{# References Templates:                                                    #}
+{#    view_observation.html                                                 #}
+
+{# Defines Blocks:                                                          #}
+{#    None                                                                  #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+{#                            Arcee_tags Library                            #}
+{%                             load Arcee_tags                              %}
+{# View the documentation for the Arcee_tags library:                       #}
+{#     ~{% url Profiling.views.root%}Profiling/templatetags/Arcee_tags.py                      #}
+
+{% content 'default' %}
+	{% header 'off' %}
+		{% spacer 10 %}	
+		{% data 'Observer' '20em' %}{{ observation.observer }}{% enddata %}
+		{% data 'Observed' '10em' %}{{ observation.time|date:"h:iA" }}{% enddata %}
+	{% endheader %}
+	{% include 'view_observation.html' %}
+{% endcontent %}
+{% vspacer %}

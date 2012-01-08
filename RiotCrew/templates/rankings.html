@@ -1,0 +1,269 @@
+{% extends 'base.html'                                                      %}
+
+{# Template: rankings.html                                                  #}
+
+{# Show teams listed by various ranking formulas                            #}
+
+
+
+{# Expects context variables:                                               #}
+
+{#    seeds     ==> a list of models.Team sorted by seed rank               #}
+
+{#    ranking   ==> a list of models.Team sorted by ranking score           #}
+
+{#    max_score ==> a list of models.Team sorted by max match score         #}
+
+{#    averages  ==> a list of models.Team sorted by average match score     #}
+
+{#    numbers   ==> a list of models.Team sorted by team number             #}
+
+{#    names     ==> a list of models.Team sorted by team name               #}
+
+
+
+{# References Templates:                                                    #}
+
+{#    rankings_list.html                                                    #}
+
+
+
+{# Defines Blocks:                                                          #}
+
+{#    None                                                                  #}
+
+
+
+{#                            django tag library                            #}
+
+{# View the online documentation for the django tag library                 #}
+
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+
+
+{#                            Arcee_tags Library                            #}
+
+{%                             load Arcee_tags                              %}
+
+{# View the documentation for the Arcee_tags library:                       #}
+
+{#     ~{% url Profiling.views.root%}Profiling/templatetags/Arcee_tags.py                      #}
+
+
+
+{% block head_content %}
+
+<style type="text/css">
+
+	.table_body .number {
+
+		text-align: right;
+
+	}
+
+	.header {
+
+		background-color: #F66;
+
+	}
+
+	.header > *{
+
+			text-align: center;
+
+	}
+
+	.even {
+
+		background-color: #FFF;
+
+	}
+
+	.odd {
+
+		background-color: #F99;
+
+	}
+
+	.table {
+
+		width: 80em;
+
+		margin-left:auto;
+
+		margin-right:auto;
+
+	}
+
+	.table_row {
+
+		width: 80em;
+
+	}
+
+	.number {
+
+		display: inline-block; 
+
+		width: 5.9em;
+
+		padding-left: .5em;
+
+		padding-right: .5em;
+
+	}
+
+	.name {
+
+		display: inline-block; 
+
+		width: 29em;
+
+		padding-left: .5em;
+
+		padding-right: .5em;
+
+	}
+
+	.vbar {
+
+		display: inline-block; 
+
+		width: .1em;
+
+		height: 100%;
+
+		background-color: #000;
+
+	}
+
+	.title {
+
+		text-align: center;
+
+		font-size: 1.2em;
+
+	}
+
+</style>
+
+<script type="text/javascript">
+
+	$(function(){
+
+		$('#list_tabs').tabs();
+
+	})
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+{% content 'background' 83.5 %}
+
+	{% header %}
+
+		<div style="display: block; width:20em; text-align:center; margin-left: auto; margin-right: auto; margin-top: .5em; margin-bottom:.5em;font-size:1.6em;">Team Rankings</div>
+
+	{% endheader %}
+
+
+
+<div id="list_tabs">
+
+	<ul style="height: 2.5em;">
+
+		<li><a href="#seed_rank">By Seed Rank</a></li>
+
+		<li><a href="#rankings">By Ranking Score</a></li>
+
+		<li><a href="#max_score">By Max Score</a></li>
+
+		<li><a href="#avg_score">By Avg Score</a></li>
+
+		<li><a href="#avg_tubes">By Avg Tubes Hung</a></li>
+
+		<li><a href="#team_number">By Team Number</a></li>
+
+		<li><a href="#team_name">By Team Name</a></li>
+
+	</ul>
+
+	<div id="seed_rank">
+
+		{% header 'off' %}<div style="font-size: 1.4em; text-align: center">Teams by Seed Rank</div>{% endheader %}
+
+		{% vspacer %}
+
+		{% with seeds as teams %}{% include 'rankings_list.html' %}{% endwith %}
+
+	</div>
+
+	<div id="rankings">
+
+		{% header 'off' %}<div style="font-size: 1.4em; text-align: center">Teams by Ranking Score</div>{% endheader %}
+
+		{% vspacer %}
+
+		{% with ranking as teams %}{% include 'rankings_list.html' %}{% endwith %}
+
+	</div>
+
+	<div id="max_score">
+
+		{% header 'off' %}<div style="font-size: 1.4em; text-align: center">Teams by Maximum Score</div>{% endheader %}
+
+		{% vspacer %}
+
+		{% with max_score as teams %}{% include 'rankings_list.html' %}{% endwith %}
+
+	</div>
+
+	<div id="avg_score">
+
+		{% header 'off' %}<div style="font-size: 1.4em; text-align: center">Teams by Average Score</div>{% endheader %}
+
+		{% vspacer %}
+
+		{% with averages as teams %}{% include 'rankings_list.html' %}{% endwith %}
+
+	</div>
+
+	<div id="avg_tubes">
+
+		{% header 'off' %}<div style="font-size: 1.4em; text-align: center">Teams by Average Tubes Hung</div>{% endheader %}
+
+		{% vspacer %}
+
+		{% with tubes as teams %}{% include 'rankings_list.html' %}{% endwith %}
+
+	</div>
+
+	<div id="team_number">
+
+		{% header 'off' %}<div style="font-size: 1.4em; text-align: center">Teams by Team Number</div>{% endheader %}
+
+		{% vspacer %}
+
+		{% with numbers as teams %}{% include 'rankings_list.html' %}{% endwith %}
+
+	</div>
+
+	<div id="team_name">
+
+		{% header 'off' %}<div style="font-size: 1.4em; text-align: center">Teams by Team Name</div>{% endheader %}
+
+		{% vspacer %}
+
+		{% with names as teams %}{% include 'rankings_list.html' %}{% endwith %}
+
+	</div>
+
+</div>
+
+{%endcontent%}
+
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'base.html'                                                      %}
+
+{# Template: add_practice_observation.html                                  #}
+
+{# Show form for entering new practice match observation data.              #}
+
+
+
+{# Expects context variables:                                               #}
+
+{#    practice_observation ==> an instance of                               #}
+
+{#                                forms.NewPracticeObservationForm          #}
+
+
+
+{# References Templates:                                                    #}
+
+{#    None                                                                  #}
+
+
+
+{# Defines Blocks:                                                          #}
+
+{#    None                                                                  #}
+
+
+
+{#                            django tag library                            #}
+
+{# View the online documentation for the django tag library                 #}
+
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+
+
+{#                            Arcee_tags Library                            #}
+
+{%                             load Arcee_tags                              %}
+
+{# View the documentation for the Arcee_tags library:                       #}
+
+{#     ~{% url Profiling.views.root%}Profiling/templatetags/Arcee_tags.py                      #}
+
+
+
+{% block title %}Arcee Add Observation - Riot Crew Scouting System{% endblock %}
+
+{% block head_content %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="ui-helper-reset ui-widget-header ui-corner-all">
+
+	<div style="float: left; width: 5em; margin-left: 12em; height: 0px;">
+
+		<a href="{% url Profiling.views.root %}">
+
+			&uArr; Home &uArr;
+
+		</a>
+
+	</div>
+
+	<div style="text-align: center;">
+
+	Enter Practice Match Observation
+
+	</div>
+
+</div>
+
+{% with practice_observation as form %}
+
+<form method="post">
+
+{% csrf_token %} 
+
+<div style="padding-left: 10%; padding-right: 10%;">
+
+	{% section 'Match Information' %}
+
+		{% show_field form.team 'two_column' %}
+
+		{% show_field form.observer 'four_column' %}
+
+	{% endsection %}
+
+	<div class="two_column">
+
+		{% section 'Autonomous Observations' %}{% show_field form.auto_action %}{% endsection %}
+
+		{% section 'Teleoperation Observations' %}
+
+			{% show_field form.tele_hung_qty 'two_column' %}
+
+			{% show_field form.tele_collected 'two_column' %}
+
+			{% show_field form.tele_hung %}
+
+			<div class="row">
+
+				{% show_field form.tele_dropped 'three_column' %}
+
+				{% show_field form.tele_damaged 'three_column' %}
+
+			</div>
+
+			{% show_field form.tele_strategy 'two_column' %}
+
+			{% show_field form.speed 'two_column' %}
+
+		{% endsection %}
+
+		{% section "Minibot Observations" %}
+
+			{% show_field form.mini_deployed 'three_column' %}
+
+			{% show_field form.mini_speed 'three_column' %}
+
+			{% show_field form.mini_score 'three_column' %}
+
+		{% endsection %}
+
+	</div>
+
+	<div class="two_column">
+
+		{% section 'Notes' %}
+
+			{% show_field form.notes %}
+
+		{% endsection %}
+
+		{% vspacer %}
+
+		{% form_save_buttons %}
+
+	</div>
+
+</div>
+
+</form>
+
+{% endwith %}
+
+{% endblock %}
