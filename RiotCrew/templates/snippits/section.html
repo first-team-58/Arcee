@@ -1,0 +1,9 @@
+{# Template For Tag: section                                                #}
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+<div id="{{ section_title|striptags|slugify|slice:':30' }}">
+	<div class="section_header">{{ section_title }}</div>
+	 {{ contents|safe }}
+</div>

@@ -1,0 +1,61 @@
+{% extends 'base.html'                                                      %}
+{# Template: upload.html                                                    #}
+{# Display an uplad file view for bulk imports/image upload                 #}
+
+{# Expects context variables:                                               #}
+{#    title    => a string to use as page title                             #}
+{#    form     => an instance of django.forms.Form                          #}
+{#    messages => a list of strings representing messages [optional]        #)
+{#    errors   => a list of strings representing errors   [optional]        #}
+
+{# References Templates:                                                    #}
+{#    None                                                                  #}
+
+{# Defines Blocks:                                                          #}
+{#    None                                                                  #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+{#                            Arcee_tags Library                            #}
+{%                             load Arcee_tags                              %}
+{# View the documentation for the Arcee_tags library:                       #}
+{#     ~{% url Profiling.views.root%}Profiling/templatetags/Arcee_tags.py                      #}
+
+{#{% block title %}{% endblock %}#}
+{#{% block head_content %}{% endblock %}#}
+{% block content %}
+	{% content 'default' 50 34 %}
+		{% header 'off' %}
+			<div style="text-align:center; font-size: 1.6em;">
+				{{ title }}
+			</div>
+		{% endheader %}
+		{% vspacer 3 %}
+		{% if messages %}
+			{% show_messages messages %}
+		{% endif %}
+		{% if errors %}
+			{% show_messages errors 'True' %}
+		{% endif %}
+		{% if form.non_field_errors %}
+			{% show_messages form.non_field_errors 'True' %}
+		{% endif %}
+		<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+			<div style="width: 380px; margin-left: auto; margin-right: auto;">
+				{% for field in form %}
+					{% show_field field '' '380px' %}
+				{% endfor %}
+			</div>
+			{% vspacer 3 %}
+			{% if admin_page %}
+				{% url Profiling.views.admin as url%}
+				{% form_save_buttons url %}
+			{% else %}
+			{% form_save_buttons %}
+			{% endif %}
+		</form>
+	{% endcontent %}
+{% endblock %}

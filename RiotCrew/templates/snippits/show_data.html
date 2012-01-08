@@ -1,0 +1,9 @@
+{# Template For Tag: show_data                                              #}
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+<div style="display: inline-block; width: {{ width }};">
+	{% if data_title and data_title|length > 0 %}<span class="label">{{ data_title }}:</span> {% endif %}{{ contents|safe }}
+</div>
+	

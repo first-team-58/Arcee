@@ -1,0 +1,107 @@
+{# Template: rankings_list.html                                             #}
+
+{# Show a list of teams in a ranking order                                  #}
+
+
+
+{# Expects context variables:                                               #}
+
+{#    teams ==> a list of models.Team ordered by some ranking formula       #}
+
+
+
+{# References Templates:                                                    #}
+
+{#    None                                                                  #}
+
+
+
+{# Defines Blocks:                                                          #}
+
+{#    None                                                                  #}
+
+
+
+{#                            django tag library                            #}
+
+{# View the online documentation for the django tag library                 #}
+
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+
+
+<div class="table">
+
+	<div class="table_row ui-corner-all ui-widget-header">
+
+		<div class="number">Rank</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">Number</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="name">Name</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">Qual. Score</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">Rank Score</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">Max Score</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">Avg Score</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">Avg Tubes</div>
+
+	</div>
+
+{% for team in teams %}
+
+	<div class="{% cycle 'ui-state-default' 'ui-state-highlight' %} table_row table_body ui-corner-all" id="team{{team.number}}">
+
+		<div class="number">{{ forloop.counter }}</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">{{ team.number }}</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="name"><a href="{{ team.get_absolute_url }}">{{ team.name }}</a></div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">{{ team.qualification_score }}</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">{{ team.ranking_score|floatformat:2 }}</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">{{ team.max_match_score }}</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">{{ team.average_alliance_score|floatformat:2 }}</div>
+
+		<div class="vbar">&nbsp;</div>
+
+		<div class="number">{{ team.average_tubes_hung }}</div>
+
+	</div>
+
+{% endfor %}
+
+</div>

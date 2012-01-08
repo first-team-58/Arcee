@@ -1,0 +1,197 @@
+{% extends 'base.html'                                                      %}
+{# Template: view_team.html                                                 #}
+{# Display all recorded information for a team                              #}
+
+{# Expects context variables:                                               #}
+{#    team                  => models.Team representing the viewed team     #}
+{#    teams                 => list of models.Team soreted by team number   #}
+{#    prev_team             => the previous models.Team in navigation order #}
+{#    next_team             => the next models.Team in navigation order     #}
+{#    messages              => list of strings representing messages        #}
+{#    teamform              => an instance of forms.TeamviewForm            #}
+{#    robot_specs           => an instance of forms.RobotSpecsForm          #}
+{#    robot_strategy        => an instance of forms.RobotStreategyForm      #}
+{#    practice_observations => list of models.PracticeObservation           #}
+{#    match_observations     => list of models.MatchObservation             #}
+
+{# References Templates:                                                    #}
+{#    match_observations.html                                               #}
+{#    practice_observations.html                                            #}
+{#    robot_specs.html                                                      #}
+{#    robot_strategy.html                                                   #}
+{#    view_teamform.html                                                    #}
+
+
+{# Defines Blocks:                                                          #}
+{#    None                                                                  #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+{#                            Arcee_tags Library                            #}
+{%                             load Arcee_tags                              %}
+{# View the documentation for the Arcee_tags library:                       #}
+{#     ~/RiotCrew/Profiling/templatetags/Arcee_tags.py                      #}
+
+{% block title %}Arcee View Team - Riot Crew Scouting System{% endblock %}
+{% block head_content %}
+<style type="text/css">
+	#content_wrapper {
+		width: 100%;
+		height: 100%;
+	}
+	#left_panel {
+		display: inline-block;
+		margin-left: .45em;
+		width: 27.5em;
+		height: 100%;
+		vertical-align: top;
+	}
+	#right_panel {
+		display: inline-block;
+		width: 54.2em;
+		height: 100%;
+		vertical-align: top;
+	}
+</style>
+<script type="text/javascript">
+	$(function(){
+		// Activate jQuery UI tabs for the content.
+		$('#content_tabs').tabs();
+		
+		// Select the correct team in the team list and set up event to 
+		// navigate to selected team when selection changes
+		$('#team_list').val(window.location.pathname).change(function(){
+			window.location = $('#team_list').val();
+		});
+		
+		// Hook up the submit button
+		$('.save_data').click(function(){$('form').submit()});
+	});
+</script>
+{% endblock head_content %}
+{% block content %}
+
+{% content 'background' 82.4 %}{# Main Content Area #}
+
+{% header %}{# Main Content Header #}
+	<div style="width: 80em; margin-left: auto; margin-right: auto;">
+	{% data '' '19.5em' %}
+		{% if prev_team %}
+		<a href="{% url Profiling.views.ShowTeam number=prev_team %}">
+			&lArr; Previous Team
+		</a>
+		{% else %}
+			&nbsp;
+		{% endif %}
+	{% enddata %}
+	{% data '' '7.4em' %}
+		{% if next_team %}
+		<div style="">
+		<a href="{% url Profiling.views.ShowTeam number=next_team %}">
+			Next Team &rArr;
+		</a>
+		</div>
+		{% else %}
+			&nbsp;
+		{% endif %}
+	{% enddata %}{% data '' '16em'%}#{{ team }}{% enddata %}
+	{% data 'Jump To' '36em'%}
+	<select style="display: inline-block;" id="team_list">
+		{% for team in teams %}
+			<option value="{% url Profiling.views.ShowTeam number=team.number%}">{{ team }}</option>
+		{% endfor %}
+	</select>
+	{% enddata %}
+	
+	</div>
+{% endheader %}	{# End Main Content Header #}
+
+<form method="post">{# Main Content Form #}
+
+{# Cross Site Request Forgery Protection #}
+{# FMI see http://docs.djangoproject.com/en/1.2/ref/contrib/csrf/ #}
+{% csrf_token %} 
+
+<div id="#content_wrapper">
+	<!-- Left panel -->
+	<div id="left_panel">
+		<div class="row" style="width:325px; height: 384px; vertical-align: middle; display: table-cell;">
+            {%url Profiling.views.root as rootPath %}
+			<img src="{% if rootPath|length > 1%}{{rootPath}}{% endif %}{{ team.image.url }}"/>
+		</div>
+		{% with teamform as form %}
+			{% include "view_teamform.html" %}
+		{% endwith %}
+	</div>
+	<!-- Right Panel -->
+	<div id="right_panel">
+		{# Display messages if provided by the view #}
+		{% if messages %}
+			{% show_messages messages %}
+		{% endif %}
+		
+		{# Display non-field form validation errors #}
+		{% if teamform.non_field_errors %}
+			{% show_messages teamform.non_field_errors 'true'}}
+		{% endif %}
+		
+		{% content %}{# Data Content Area #}
+		{% header 'off' %}{# Data Content Header #}
+			{% data 'Qual. Points' '' %}{{ team.qualification_score }}{% enddata %}
+			{% data 'Rank Points' '' %}{{ team.ranking_score|floatformat:2 }}{% enddata %}
+			{% data 'Max Score' '' %}{{ team.max_match_score }}{% enddata %}
+			{% data 'Avg. Score' '' %}{{ team.average_alliance_score|floatformat:2 }}{% enddata %}
+			{% data 'Matches' '' %}{{ team.matches_played }}{% enddata %}
+			{% data 'Y Cards' '5em' %}{{ team.yellow_cards }}{% enddata %}
+			{% data 'R Cards' '5em' %}{{ team.red_cards }}{% enddata %}
+		{% endheader %}{# End Data Content Header #}
+		<div id="content_tabs" class="full_height">
+			<ul style="height: 2.5em;">
+				<li><a href="#content_tab_specs">Specifications</a></li>
+				<li><a href="#content_tab_strategy">Strategy</a></li>
+				<li><a href="#content_tab_practice">Practice</a></li>
+				<li><a href="#content_tab_observations">Matches</a></li>
+				<li style="float:right;" class="ui-corner-all"><a href="#content_tab_save" class="save_data">Save Changes</a></li>
+				<li style="float:right;" class="ui-corner-all"><a onClick="window.location='{% url Profiling.views.ranking %}'" href="#content_tab_save">View Rankings</a></li>
+			</ul>
+			<div id="content_tab_specs" class="full_height">
+				{% with robot_specs as form %}
+					{% include "robot_specs.html" %}
+				{% endwith %}
+			</div>
+			<div id="content_tab_strategy" class="full_height">
+				{% with robot_strategy as form %}
+					{% include "robot_strategy.html" %}
+				{% endwith %}
+			</div>
+			<div id="content_tab_practice" class="full_height">
+				{% with practice_observations as observations %}
+					{% include "practice_observations.html" %}
+				{% endwith %}
+			</div>
+			<div id="content_tab_observations" class="full_height">
+				{% with match_observations as observations %}
+					{% include "match_observations.html" %}
+				{% endwith %}
+			</div>
+			<div id="content_tab_save" class="full_height">
+			<div style="text-align:center">
+				<div class="ui-state-highlight ui-corner-all" style="display: inline-block;">
+					{% spacer %}
+					<img src="{% url Profiling.views.root%}content/Images/spinner.gif" style="vertical-align: middle"> 
+					{% spacer %}
+					Loading...
+					{% spacer %}
+				</div>
+			</div>
+			</div>
+		</div>
+		{% endcontent %}{# End Data Content Area #}
+	</div>
+</div>
+</form>{# End Main Content Form #}
+{% endcontent %}{# End Main Content Area #}
+
+{% endblock %}

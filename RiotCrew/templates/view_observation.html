@@ -1,0 +1,44 @@
+{# Template: view_observation.html                                          #}
+{# Display previously entered observation data                              #}
+
+{# Expects context variables:                                               #}
+{#    observation ==> an instance of models.MatchObservation or             #}
+{#                         models.PracticeObservation                       #}
+
+{# References Templates:                                                    #}
+{#    None                                                                  #}
+
+{# Defines Blocks:                                                          #}
+{#    None                                                                  #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+{#                            Arcee_tags Library                            #}
+{%                             load Arcee_tags                              %}
+{# View the documentation for the Arcee_tags library:                       #}
+{#     ~{% url Profiling.views.root%}Profiling/templatetags/Arcee_tags.py                      #}
+
+{% section 'Autonomous Operation:' %}
+	{% data 'Strategy' %}{{ observation.get_auto_action_display }}{% enddata %}
+{% endsection %}
+{% section 'Teleoperation:' %}
+	{% data 'Hung tubes' %}{{ observation.get_tele_hung_qty_display }}{% enddata %}
+	{% data 'Hung on' %}{{ observation.get_tele_hung_display }}{% enddata %}
+	{% data 'Collected tubes' %}{{ observation.get_tele_collected_display }}{% enddata %}
+	{% data 'Dropped tubes' %}{{ observation.get_tele_dropped_display }}{% enddata %}
+	{% data 'Damaged tubes' %}{{ observation.get_tele_damaged_display }}{% enddata %}
+	{% data 'Strategy' %}{{ observation.get_tele_strategy_display }}{% enddata %}
+	{% data 'Speed' %}{{ observation.get_speed_display }}{% enddata %}
+{% endsection %}
+{% section 'Minibot:' %}
+	{% data 'Deployment time' %}{{ observation.get_mini_deployed_display }}{% enddata %}
+	{% data 'Climb speed' %}{{ observation.get_mini_speed_display }}{% enddata %}
+	{% data 'Score' %}{{ observation.get_mini_score_display }}{% enddata %}
+{% endsection %}
+{% if observation.notes %}
+	{% section 'Additional Notes:' %}
+		{% data 'Notes' '100%' %}{{ observation.notes }}{% enddata %}
+	{% endsection %}
+{% endif %}

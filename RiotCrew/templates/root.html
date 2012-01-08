@@ -1,0 +1,57 @@
+{% extends 'base.html'                                                      %}
+{# Template: root.html                                                      #}
+{# Display root view for data entry                                         #}
+
+{# Expects context variables:                                               #}
+{#    None                                                                  #}
+
+{# References Templates:                                                    #}
+{#    None                                                                  #}
+
+{# Defines Blocks:                                                          #}
+{#    None                                                                  #}
+
+{#                            Arcee_tags Library                            #}
+{%                             load Arcee_tags                              %}
+{# View the documentation for the Arcee_tags library:                       #}
+{#     ~{% url Profiling.views.root%}Profiling/templatetags/Arcee_tags.py                      #}
+
+{% block head_content %}
+	<style type="text/css">
+		.link {
+			text-align: center; 
+			text-decoration: underline;
+			font-size: 1.5em; 
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+{% block content %}
+	{% content 'default' '50' '34' %}
+		{% header 'off' %}
+			<div style="text-align: center; font-size: 2em;">
+				Arcee - Riot Crew Profiling System
+			</div>
+			<div style="text-align: center; font-size: 1.5em;">
+				2011 Competition &mdash; LOGO MOTION
+			</div>
+		{% endheader %}
+		<div style="text-align: center;">
+			<img src="{% url Profiling.views.root%}content/Images/FRC_LOGO_MOTION.png" style="display: inline;"> 
+		</div>
+		{% vspacer %}
+		<div class="link"><a href="{% url Profiling.views.viewDefaultTeam %}">View Teams</a></div>
+		{% vspacer %}
+		<div class="link"><a href="{% url Profiling.views.ranking %}">View Rankings</a></div>
+		{% vspacer %}
+		<div class="link"><a href="{% url Profiling.views.NewMatchObservation %}">Add Match Observation</a></div>
+		{% vspacer %}
+		<div class="link"><a href="{% url Profiling.views.NewPracticeObservation %}">Add Practice Observation</a></div>
+		{% vspacer %}
+		<div class="link"><a href="{% url Profiling.views.uploadPhoto %}">Upload Team Photo</a></div>
+		
+		<div style="position: absolute; bottom: 0px; left: 0px; right: 0px; text-align: center;">
+			<img src="{% url Profiling.views.root%}content/Images/first_regional_banner.gif" style="display: inline;"> 
+		</div>
+	{% endcontent %}
+{% endblock %}

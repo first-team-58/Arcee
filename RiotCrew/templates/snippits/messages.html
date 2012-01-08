@@ -1,0 +1,24 @@
+{# Template For Tag: messages                                               #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+{% if errors %}
+<div class="ui-state-error ui-corner-all" style="padding: .7em;">
+	<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+{% else %}
+<div class="ui-state-highlight ui-corner-all" style="padding: .7em;">
+	<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+{% endif %}
+<div style=" padding-left: 2em;"{% if messages|length > 1 %}  onclick="$(this).next().show();$(this).hide();"{% endif %}>
+	{{ messages|first }} {% if messages|length > 1 %}(Click for more...){% endif %}
+</div>
+{% if messages|length > 1 %}
+	<div style="display: none; padding-left: 2em;" onclick="$(this).prev().show();$(this).hide();">
+		{% for message in messages %}
+			{{ message }}<br />
+		{% endfor %}
+	</div>
+{% endif %}
+</div>

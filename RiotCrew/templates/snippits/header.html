@@ -1,0 +1,15 @@
+{# Template For Tag: header                                                 #}
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+<div class="ui-helper-reset ui-widget-header ui-corner-all" style="margin: -0.5em; margin-bottom: 0;">
+	{% if root_link %}
+	<div style="position: absolute; left: 12em; width: 5em; z-index: 5;">
+		<a href="{% url Profiling.views.root %}">
+			&uArr; Home &uArr;
+		</a>
+	</div>
+	{% endif %}
+	{{ contents }}
+</div>

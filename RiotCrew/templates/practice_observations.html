@@ -1,0 +1,26 @@
+{# Template: practice_observations.html                                     #}
+{# Show a list of practice observations                                     #}
+
+{# Expects context variables:                                               #}
+{#    observations ==> a list of models.PracticeObservation                 #}
+
+{# References Templates:                                                    #}
+{#    view_practice_observation.html                                        #}
+
+{# Defines Blocks:                                                          #}
+{#    None                                                                  #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+
+{% for observation in observations %}
+	<div class="observation">
+		{% include "view_practice_observation.html" %}
+	</div>
+{% empty %}
+	<div class="observation">
+		No observations have been entered yet.
+	</div>
+{% endfor %}

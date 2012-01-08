@@ -1,0 +1,16 @@
+{# Template For Tag: form_save_buttons                                      #}
+
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+{#                            Arcee_tags Library                            #}
+{%                             load Arcee_tags                              %}
+
+<div id="submit" style="text-align: center;">
+	<input class="button" type="submit" name="op" value="Save and continue" />
+	{% spacer %}
+	<input class="button" type="submit" name="op" value="Save and quit" />
+	{% spacer %}
+	<a href="{% if root_link %}{{ root_link }}{% else %}{% url Profiling.views.root %}{% endif %}" class="button">Quit</a>
+</div>

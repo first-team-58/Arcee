@@ -1,0 +1,10 @@
+{# Template For Tag: content                                                #}
+{#                            django tag library                            #}
+{# View the online documentation for the django tag library                 #}
+{#     http://docs.djangoproject.com/en/1.2/ref/templates/builtins/         #}
+
+{% if width and height %}<div style="position: absolute; top: 50%; left: 50%; width: 0; height: 0;">{% endif %}
+<div class="{{ extra_class }} ui-widget ui-widget-content {% if state %}ui-state-{{ state }}{% endif %} ui-corner-all" style="padding: 0.5em;{% if width %} width: {{ width }}em;{% endif %}{% if height %} height: {{ height }}em;{% endif %}{% if width and height %} position: relative; top: -{% widthratio height 2 1 %}em;  left: -{% widthratio width 2 1 %}em; {% endif %}">
+	{{ contents }}
+</div>
+{% if width and height %}</div>{% endif %}
