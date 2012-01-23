@@ -100,16 +100,15 @@ class RobotStrategy (models.Model):
 	)
 	auto_strategy = models.TextField (
 		blank = True,
-		verbose_name = 'Automation Strategy'
+		verbose_name = 'Hybrid Strategy'
 	)
 	
 
 class RobotSpecs (models.Model):
 	ARCEE_SECTIONS = {
 			'weight': 'Basic Stats',
-			'auto_strategy': 'Autonomous',
+			'auto_strategy': 'Hybrid',
 			'tele_hang': 'Teleoperation',
-			'mini_count': 'Minibot',
 		}
 	NBOOL_CHOICES = (
 		(None, 'Unknown'),
@@ -190,9 +189,9 @@ class RobotSpecs (models.Model):
 	)
 	AUTO_STRATEGY = (
 		('NOA', 'No Action'),
-		('HOB', 'Hang on Bottom'),
-		('HOM', 'Hang on Middle'),
-		('HOT', 'Hang on Top'),
+		('HOB', 'Score Bottom'),
+		('HOM', 'Score Middle'),
+		('HOT', 'Score Top'),
 		('POS', 'Position Robot'),
 	)
 	ROWS = (
@@ -202,7 +201,7 @@ class RobotSpecs (models.Model):
 	)
 	TELE_STRATEGY = (
 		('NOP', 'Not Provided',),
-		('HNG', 'Hang Tubes'),
+		('HNG', 'Score Baskets'),
 		('BLK', 'Blocking Defense'),
 		('HAR', 'Harrassing Defense'),
 		('OTO', 'Other')
@@ -284,44 +283,44 @@ class RobotSpecs (models.Model):
 		verbose_name = 'Drive Team Practice Time',
 		help_text = 'Time spent practicing with this year\'s robot.',
 	)
-	auto_strategy = models.CharField (
+	hybrid_strategy = models.CharField (
 		max_length = 3,
 		default = 'NOA',
 		choices = AUTO_STRATEGY,
-		verbose_name = 'Autonomous Strategy',
-		help_text = 'Preferred or best autonomous mode strategy',
+		verbose_name = 'Hybrid Strategy',
+		help_text = 'Preferred or best hybrid mode strategy',
 	)
-	auto_hang = ArceeFields.MultiSelectField (
+	hybrid_score = ArceeFields.MultiSelectField (
 		blank = True,
 		max_length = 20,
 		choices = ROWS,
-		verbose_name = 'Robot can hang tubes',
-		help_text = 'Robot can hang on these rows in autonomous mode',
+		verbose_name = 'Robot can score baskets',
+		help_text = 'Robot can score baskets on these levels in autonomous mode',
 	)
-	tele_hang = ArceeFields.MultiSelectField (
+	tele_score = ArceeFields.MultiSelectField (
 		blank = True,
 		max_length = 20,
 		choices = ROWS,
-		verbose_name = 'Robot can hang tubes',
-		help_text = 'Robot can hang on these rows in teleoperation mode',
+		verbose_name = 'Robot can score baskets',
+		help_text = 'Robot can score baskets on these levels in teleoperation mode',
 	)
-	tele_time_hang_bottom = models.IntegerField (
+	tele_time_score_bottom = models.IntegerField (
 		default = 0,
 		choices = GAME_TIME,
-		verbose_name = 'Time to hang on bottom row',
-		help_text = 'Time to hang on bottom row with arm starting in rest state',
+		verbose_name = 'Time to score bottom basket',
+		help_text = 'Time to score bottom basket with scoring mechanism starting in rest state',
 	)
-	tele_time_hang_middle = models.IntegerField (
+	tele_time_score_middle = models.IntegerField (
 		default = 0,
 		choices = GAME_TIME,
-		verbose_name = 'Time to hang on middle row',
-		help_text = 'Time to hang on middle row with arm starting in rest state',
+		verbose_name = 'Time to score middle basket',
+		help_text = 'Time to score middle basket with scoring mechanism starting in rest state',
 	)
-	tele_time_hang_top = models.IntegerField (
+	tele_time_score_top = models.IntegerField (
 		default = 0,
 		choices = GAME_TIME,
-		verbose_name = 'Time to hang on top row',
-		help_text = 'Time to hang on top row with arm starting in rest state',
+		verbose_name = 'Time to score top basket',
+		help_text = 'Time to score top basket with scoring mechanism starting in rest state',
 	)
 	tele_strategy = models.CharField (
 		max_length = 3,
@@ -336,30 +335,17 @@ class RobotSpecs (models.Model):
 		verbose_name = 'Pushing Power',
 		help_text = 'Robot relative pushing power',
 	)
-	mini_count = models.CharField (
-		default = 'Z',
-		choices = QUANTITY,
-		max_length = 1,
-		verbose_name = 'Minibot Quantity',
-		help_text = 'Number of Minibots.',
-	)
-	mini_speed = models.IntegerField (
-		default = 0,
-		choices = GAME_TIME,
-		verbose_name = 'Minibot Speed',
-		help_text = 'Time from bottom of pole to the top (seconds)',
-	)
-	mini_deployment = models.IntegerField (
-		default = 0,
-		choices = GAME_TIME,
-		verbose_name = 'Minibot Deployment Time',
-		help_text = 'Time to deploy minibot from robot',
-	)
-	mini_compat = models.NullBooleanField (
+	balance_capable = models.NullBooleanField (
 		default = None,
 		choices = NBOOL_CHOICES,
-		verbose_name = 'Minibot Comapatible',
-		help_text = 'Is minibot is compatible with our deployment system',
+		verbose_name = 'Robot can balance',
+		help_text = 'Robot can balance on a bridge at the end of the match',
+	)
+	multi_balance_capable = models.NullBooleanField (
+		default = None,
+		choices = NBOOL_CHOICES,
+		verbose_name = 'Robot can multi-balance',
+		help_text = 'Robot can ballance on a bridge with one or more other robots on the bridge at the end of the match',
 	)
 	notes = models.TextField (
 		blank = True,
@@ -367,20 +353,20 @@ class RobotSpecs (models.Model):
 	)
 	
 class MatchObservation (models.Model):
-	AUTO_ACTIONS = (
+	HYBRID_ACTIONS = (
 		('NOA', 'No Activity'),
-		('HOB', 'Hung on Bottom'),
-		('HOM', 'Hung on Middle'),
-		('HOT', 'Hung on Top'),
-		('HAT', 'Attempted Hang'),
+		('HOB', 'Scored Bottom'),
+		('HOM', 'Scored Middle'),
+		('HOT', 'Scored Top'),
+		('HAT', 'Attempted Score'),
 		('OTO', 'Other'),
 	)
-	TELE_TUBES = (
+	TELE_SCORE = (
 		(0, 'None'),
-		(2, '1-3 Tubes'),
-		(5, '4-6 Tubes'),
-		(8, '7-9 Tubes'),
-		(11, '10-12 Tubes'),
+		(2, '1-3 Baskets'),
+		(5, '4-6 Baskets'),
+		(8, '7-9 Baskets'),
+		(11, '10-12 Baskets'),
 	)
 	TELE_COLLECT = (
 		('N/A', 'Not Applicable'),
@@ -396,18 +382,25 @@ class MatchObservation (models.Model):
 		('FST', 'Fast'),
 		('SPD', 'Speedy Gonzolas'),
 	)
-	MINI_SCORE = (
-		(0, 'No Score'),
-		(1, 'First'),
-		(2, 'Second'),
-		(3, 'Third'),
-		(4, 'Fourth'),
-	)
 	RED_YELLOW_CARDS = (
 		('NON', 'No Cards'),
 		('YLW', 'Yellow Card'),
 		('RED', 'Red Card'),
 		('BOT', 'Yellow+Red Card'),
+	)
+	QUANTITY = (
+		('Z','N/A'),
+		('0','0'),
+		('1','1'),
+		('2','2'),
+		('3','3'),
+		('4','4'),
+		('5','5'),
+		('6','6'),
+		('7','7'),
+		('8','8'),
+		('9','9'),
+		('A','10')
 	)
 	team = models.ForeignKey ( Team,
 		verbose_name = 'Team',
@@ -425,10 +418,16 @@ class MatchObservation (models.Model):
 		verbose_name = 'Opponent Score',
 	)
 	alliance_penalties = models.IntegerField (
-		verbose_name = 'Alliance Penalties',
+		verbose_name = 'Alliance Fouls',
 	)
 	opponent_penalties = models.IntegerField (
-		verbose_name = 'Opponent Penalties',
+		verbose_name = 'Opponent Fouls',
+	)
+	alliance_tech_penalties = models.IntegerField (
+		verbose_name = 'Alliance Technical Fouls',
+	)
+	opponent_tech_penalties = models.IntegerField (
+		verbose_name = 'Opponent Technical Fouls',
 	)
 	red_yellow_card = models.CharField ( 
 		default = 'NON',
@@ -439,36 +438,36 @@ class MatchObservation (models.Model):
 	auto_action = models.CharField ( 
 		default = 'NOA',
 		max_length = 3,
-		choices = AUTO_ACTIONS,
-		verbose_name = 'Autonomous Action',
+		choices = HYBRID_ACTIONS,
+		verbose_name = 'Hybrid Action',
 	)
 	tele_hung_qty = models.IntegerField (
 		default = 'N/A',
-		choices = TELE_TUBES,
-		verbose_name = 'Tubes Hung',
+		choices = TELE_SCORE,
+		verbose_name = 'Baskets Scored',
 	)
 	tele_hung = ArceeFields.MultiSelectField (
 		blank = True,
 		max_length = 20,
 		choices = RobotSpecs.ROWS,
-		verbose_name = 'Robot hung tubes',
-		help_text = 'Robot hung on these rows in teleoperation mode',
+		verbose_name = 'Robot scored baskets',
+		help_text = 'Robot scored in these baskets in teleoperation mode',
 	)
 	tele_collected = models.CharField (
 		max_length = 3,
 		default = 'N/A',
 		choices = TELE_COLLECT,
-		verbose_name = 'Tubes Collected From',
+		verbose_name = 'Balls Collected From',
 	)
 	tele_dropped = models.IntegerField (
 		default = 'N/A',
-		choices = TELE_TUBES,
-		verbose_name = 'Dropped Tube(s)',
+		choices = TELE_SCORE,
+		verbose_name = 'Lost Balls(s)',
 	)
 	tele_damaged = models.IntegerField (
 		default = 'N/A',
 		choices = TELE_TUBES,
-		verbose_name = 'Damaged Tube(s)',
+		verbose_name = 'Damaged Balls(s)',
 	)
 	tele_strategy = models.CharField (
 		max_length = 3,
@@ -482,33 +481,22 @@ class MatchObservation (models.Model):
 		choices = SPEED,
 		verbose_name = 'Robot Speed',
 	)
-	mini_score = models.IntegerField (
-		choices = MINI_SCORE,
-		default = 0,
-		verbose_name = 'Scores',
-	)
-	mini_deployed = models.CharField (
-		max_length = 3,
-		default = 'NOM',
-		choices = SPEED,
-		verbose_name = 'Deployment Speed',
-	)
-	mini_speed = models.CharField (
-		max_length = 3,
-		default = 'NOM',
-		choices = SPEED,
-		verbose_name = 'Climb Speed',
+	balance_capable = models.NullBooleanField (
+		default = None,
+		choices = RobotSpecs.NBOOL_CHOICES,
+		verbose_name = 'Robot balanced',
+		help_text = 'Robot balanced on a bridge at the end of the match',
 	)
 	notes = models.TextField (
 		blank = True,
 		verbose_name = 'Additional Notes'
 	)
 	def alliance_points(self):
-		sc = self.alliance_score - self.alliance_penalties
+		sc = self.alliance_score + self.opponent_penalties * 3 + self.opponent_tech_penalties * 9
 		return sc if sc > 0 else 0
 		
 	def opponent_points(self):
-		sc = self.opponent_score - self.opponent_penalties
+		sc = self.opponent_score + self.alliance_penalties * 3 + self.alliance_tech_penalties * 9
 		return sc if sc > 0 else 0
 		
 	def result(self):
@@ -555,37 +543,36 @@ class PracticeObservation (models.Model):
 	auto_action = models.CharField ( 
 		default = 'NOA',
 		max_length = 3,
-		choices = MatchObservation.AUTO_ACTIONS,
-		verbose_name = 'Autonomous Action',
+		choices = HYBRID_ACTIONS,
+		verbose_name = 'Hybrid Action',
 	)
 	tele_hung_qty = models.IntegerField (
 		default = 'N/A',
-		choices = MatchObservation.TELE_TUBES,
-		verbose_name = 'Tubes Hung',
+		choices = TELE_SCORE,
+		verbose_name = 'Baskets Scored',
 	)
 	tele_hung = ArceeFields.MultiSelectField (
 		blank = True,
 		max_length = 20,
 		choices = RobotSpecs.ROWS,
-		verbose_name = 'Robot hung tubes',
-		help_text = 'Robot hung on these rows in teleoperation mode',
+		verbose_name = 'Robot scored baskets',
+		help_text = 'Robot scored in these baskets in teleoperation mode',
 	)
 	tele_collected = models.CharField (
 		max_length = 3,
 		default = 'N/A',
-		choices = MatchObservation.TELE_COLLECT,
-		verbose_name = 'Tubes Collected From',
+		choices = TELE_COLLECT,
+		verbose_name = 'Balls Collected From',
 	)
 	tele_dropped = models.IntegerField (
 		default = 'N/A',
-		choices = MatchObservation.TELE_TUBES,
-		verbose_name = 'Dropped Tube(s)',
+		choices = TELE_SCORE,
+		verbose_name = 'Lost Balls(s)',
 	)
 	tele_damaged = models.IntegerField (
-		max_length = 3,
 		default = 'N/A',
-		choices = MatchObservation.TELE_TUBES,
-		verbose_name = 'Damaged Tube(s)',
+		choices = TELE_TUBES,
+		verbose_name = 'Damaged Balls(s)',
 	)
 	tele_strategy = models.CharField (
 		max_length = 3,
@@ -596,25 +583,14 @@ class PracticeObservation (models.Model):
 	speed = models.CharField (
 		max_length = 3,
 		default = 'NOM',
-		choices = MatchObservation.SPEED,
+		choices = SPEED,
 		verbose_name = 'Robot Speed',
 	)
-	mini_score = models.IntegerField (
-		choices = MINI_SCORE,
-		default = 0,
-		verbose_name = 'Scores',
-	)
-	mini_deployed = models.CharField (
-		max_length = 3,
-		default = 'NOM',
-		choices = MatchObservation.SPEED,
-		verbose_name = 'Deployment Speed',
-	)
-	mini_speed = models.CharField (
-		max_length = 3,
-		default = 'NOM',
-		choices = MatchObservation.SPEED,
-		verbose_name = 'Climb Speed',
+	balance_capable = models.NullBooleanField (
+		default = None,
+		choices = RobotSpecs.NBOOL_CHOICES,
+		verbose_name = 'Robot balanced',
+		help_text = 'Robot balanced on a bridge',
 	)
 	notes = models.TextField (
 		blank = True,
