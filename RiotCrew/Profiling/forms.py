@@ -43,8 +43,8 @@ class RobotSpecsForm (forms.ModelForm):
 	class Meta:
 		model = RobotSpecs
 		widgets = {
-			'auto_hang': forms.CheckboxSelectMultiple,
-			'tele_hang': forms.CheckboxSelectMultiple,
+			'hybrid_score': forms.CheckboxSelectMultiple,
+			'tele_score': forms.CheckboxSelectMultiple,
 		}
 	
 class MatchObservationForm (forms.ModelForm):
