@@ -38,26 +38,24 @@
 <div class="three_column">
 	<div id="autonomous">
 		<div class="section_header">Autonomous</div>
-		{% show_field form.auto_hang %}
-		{% show_field form.auto_strategy %}
+		{% show_field form.hybrid_score %}
+		{% show_field form.hybrid_strategy %}
 	</div>
 	<div class="vspacer"></div>
 	<div id="teleop">
 		<div class="section_header">Teleoperation</div>
-		{% show_field form.tele_hang %}
-		{% show_field form.tele_time_hang_top %}
-		{% show_field form.tele_time_hang_middle %}
-		{% show_field form.tele_time_hang_bottom %}
+		{% show_field form.tele_score %}
+		{% show_field form.tele_time_score_top %}
+		{% show_field form.tele_time_score_middle %}
+		{% show_field form.tele_time_score_bottom %}
 		{% show_field form.tele_strategy %}
 	</div>
 </div>
 <div class="three_column">
 	<div id="minibot">
-		<div class="section_header">Minibot</div>
-		{% show_field form.mini_count %}
-		{% show_field form.mini_speed %}
-		{% show_field form.mini_deployment %}
-		{% show_field form.mini_compat %}
+		<div class="section_header">End Game</div>
+		{% show_field form.balance_capable %}
+		{% show_field form.multi_balance_capable %}
 	</div>
 </div>
 <div id="additional_notes">
