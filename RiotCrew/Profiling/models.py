@@ -512,11 +512,11 @@ class MatchObservation (models.Model):
         verbose_name = 'Additional Notes'
     )
     def alliance_points(self):
-        sc = self.alliance_score + self.opponent_penalties * 3 + self.opponent_tech_penalties * 20
+        sc = self.alliance_score + self.opponent_penalties + self.opponent_tech_penalties
         return sc if sc > 0 else 0
         
     def opponent_points(self):
-        sc = self.opponent_score + self.alliance_penalties * 3 + self.alliance_tech_penalties * 20
+        sc = self.opponent_score + self.alliance_penalties + self.alliance_tech_penalties
         return sc if sc > 0 else 0
         
     def result(self):
@@ -623,7 +623,7 @@ class PracticeObservation (models.Model):
         verbose_name = 'Additional Notes'
     )
     def __unicode__(self):
-        return u'PO%d:%d' %(self.team.number, self.time)
+        return u'PO%d:%s' %(self.team.number, self.time)
 
 class Observer (models.Model):
     name = models.CharField(

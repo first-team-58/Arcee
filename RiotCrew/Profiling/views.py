@@ -77,7 +77,7 @@ def uploadPhoto(request):
             # TODO: Resize image to display size of 325x384 preserving aspect ratio
             
             im = Image.open(picture)
-            im.thumbnail((325,384))
+            im.thumbnail((325,384), Image.BICUBIC)
             im_file = StringIO()
             im.save(im_file, 'GIF')
             team.image.delete(save = False)
